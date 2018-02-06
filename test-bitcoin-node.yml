@@ -1,0 +1,58 @@
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  labels:
+    k8s-app: test-bitcoin-node
+  name: test-bitcoin-node
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: test-bitcoin-node
+  template:
+    metadata:
+      labels:
+        k8s-app: test-bitcoin-node
+      annotations:
+        # prometheus.io/scrape: 'true'
+    spec:
+      containers:
+      - name: test-bitcoin-node
+        image: bcawthra/bitcoind:8
+        env:
+        - name: BTC_RPCUSER
+          value: ${BTC_RPCUSER}
+        - name: BTC_RPCPASSWORD
+          value: ${BTC_RPCPASSWORD}
+        - name: BTC_RPCALLOWIP
+          value: ${BTC_RPCALLOWIP}
+        - name: BTC_TXINDEX
+          value: "0"
+        - name: BTC_TESTNET
+          value: "1"
+        volumeMounts:
+        - mountPath: /bitcoin
+          name: test-bitcoin-data
+        ports:
+        - containerPort: 8332
+          protocol: TCP
+        - containerPort: 8333
+          protocol: TCP
+      volumes:
+      - name: test-bitcoin-data
+        persistentVolumeClaim:
+          claimName: test-bitcoin-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-bitcoin-data
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
