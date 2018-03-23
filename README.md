@@ -9,7 +9,7 @@ This deployment will create a Bitcoin Kubernetes deployment and persistent volum
 This deployment is meant to substitute in your environment variables, to protect secrets and passwords. The following is an example:
 
 ```
-BTC_RPCUSER=test BTC_RPCPASSWORD=testpassword BTC_RPCALLOWIP=10.3.0.0/14 envsubst < test-bitcoin-node.yml > test-deploy.yml
+BTC_RPCUSER=test BTC_RPCPASSWORD=testpassword BTC_RPCALLOWIP=10.3.0.0/14 BTC_TESTNET=1 envsubst < test-bitcoin-node.yml > test-deploy.yml
 kubectl create -f test-deploy.yml
 ```
 
