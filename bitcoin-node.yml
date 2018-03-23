@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: bitcoin-node
-        image: bcawthra/bitcoind:8
+        image: bcawthra/bitcoind:latest
         env:
         - name: BTC_RPCUSER
           value: ${BTC_RPCUSER}
